@@ -220,6 +220,12 @@ namespace Marten.Services
                 throw new ConcurrentUpdateException(e);
             }
 
+            if (EventStreamUnexpectedMaxEventIdExceptionTransform.Instance.TryTransform(e,
+                out var eventStreamUnexpectedMaxEventIdException))
+            {
+                throw eventStreamUnexpectedMaxEventIdException;
+            }
+
             if (e is NpgsqlException)
             {
                 throw MartenCommandExceptionFactory.Create(cmd, e);
