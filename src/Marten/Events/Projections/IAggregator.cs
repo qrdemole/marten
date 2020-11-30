@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 namespace Marten.Events.Projections
 {
+    [Obsolete("This is getting replaced in v4")]
     public interface IAggregator
     {
         Type AggregateType { get; }
@@ -11,6 +12,7 @@ namespace Marten.Events.Projections
         bool AppliesTo(EventStream stream);
     }
 
+    [Obsolete("This is getting replaced in v4")]
     public interface IAggregator<T>: IAggregator
     {
         IAggregation<T, TEvent> AggregatorFor<TEvent>();

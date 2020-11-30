@@ -1,6 +1,12 @@
 using System;
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 using Baseline;
 using Marten.Events.Projections;
+using Marten.Events.V4Concept;
+using Marten.Internal.Operations;
+using Marten.Internal.Sessions;
 
 namespace Marten.Events
 {
@@ -39,8 +45,11 @@ namespace Marten.Events
         /// </summary>
         string TenantId { get; set; }
 
+        [Obsolete("Eliminate in v4")]
         void Apply<TAggregate>(TAggregate state, IAggregator<TAggregate> aggregator)
             where TAggregate : class;
+
+        Type EventType { get; }
     }
 
     // ENDSAMPLE
@@ -96,6 +105,7 @@ namespace Marten.Events
 
         object IEvent.Data => Data;
 
+        [Obsolete("Make this go away in v4")]
         public virtual void Apply<TAggregate>(TAggregate state, IAggregator<TAggregate> aggregator)
             where TAggregate : class
         {
@@ -110,6 +120,9 @@ namespace Marten.Events
                 step?.Apply(state, Data);
             }
         }
+
+        public Type EventType => typeof(T);
+
 
         protected bool Equals(Event<T> other)
         {
